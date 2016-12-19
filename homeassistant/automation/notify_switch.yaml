@@ -1,0 +1,14 @@
+alias: Notify switch changes
+trigger:
+  platform: state
+  entity_id:
+    - switch.5th_m
+    - switch.5th_f
+    - switch.6th_m
+    - switch.6th_f
+action:
+  service: notify.notify
+  data_template:
+    title: ''
+    message: >
+      {{ trigger.to_state.name }} {{ trigger.to_state.state }}

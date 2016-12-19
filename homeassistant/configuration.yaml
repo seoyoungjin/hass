@@ -1,0 +1,104 @@
+homeassistant:
+  name: Seowoo
+  latitude: 37.57
+  longitude: 126.98
+  elevation: 40
+  unit_system: metric
+  time_zone: Asia/Seoul
+
+# seowoo
+http:
+  api_password: 931107
+  # Set to 1 to enable development mode
+  # development: 1
+
+# Track the sun
+sun:
+
+# Enables support for tracking state changes over time.
+history:
+
+# Checks for available updates
+updater:
+
+# Discover some devices automatically
+# discovery:
+
+# Enables the frontend
+frontend:
+
+device_tracker:
+
+logger:
+  default: error
+  logs:
+    homeassistant.components.device_tracker: critical
+
+switch:
+  - platform: orvibo
+    discovery: false
+    switches:
+      - host: 192.168.31.11
+        mac : ac:cf:23:65:95:64
+        name: "5th (F)"
+
+      - host: 192.168.31.12
+        mac : ac:cf:23:65:eb:14
+        name: "5th (M)"
+
+      - host: 192.168.31.13
+        mac : ac:cf:23:65:97:18
+        name: "6th (M)"
+
+      - host: 192.168.31.14
+        mac : ac:cf:23:65:e4:34
+        name: "6th (F)"
+
+group:
+  5th_floor:
+    - switch.5th_m
+    - switch.5th_f
+  6th_floor:
+    - binary_sensor.6th_window
+    - sensor.6th_temperature
+    - switch.6th_m
+    - switch.6th_f
+
+mqtt:
+  broker: localhost
+  port: 1883
+  client_id: hass
+  keepalive: 60
+  protocol: 3.1
+
+binary_sensor:
+  - platform: mqtt
+    state_topic: 'xiaomi/magnet/158d0000f4f404/status'
+    name: "6th Window"
+    sensor_class: opening
+    payload_on: "open"
+    payload_off: "close"
+
+sensor 6th:
+  - platform: mqtt
+    state_topic: 'xiaomi/sensor_ht/158d0000f19c74/temperature'
+    name: '6th Temperature'
+    unit_of_measurement: '°C'
+    value_template: '{{ float(value) / 100 }}'
+
+sensor owm:
+  platform: openweathermap
+  api_key: 9cb6929371825465a7d1dba06c001860
+  forecast: 0
+  monitored_conditions:
+    - weather
+    - temperature
+    - humidity
+
+notify:
+  platform: telegram
+  api_key: 287934766:AAF34VtjLYQOUB1-rMGl58A55X5kfFa4QSo
+  chat_id: 314888467
+
+# Automation
+automation: !include_dir_list automation

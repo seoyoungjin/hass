@@ -1,0 +1,10 @@
+[Unit]
+Description=Aqara Service
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /usr/local/bin/aqara.py
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,20 @@
+alias: Turn on heaters at 5th floor
+trigger:
+  platform: numeric_state
+  entity_id: sensor.owm_temperature
+  below: -5
+condition:
+  condition: time
+  after: '00:00:00'
+  before: '06:00:00'
+action:
+  - service: homeassistant.turn_on
+    entity_id:
+      - switch.5th_m
+      - switch.5th_f
+  - delay:
+      minutes: 20
+  - service: homeassistant.turn_off
+    entity_id:
+      - switch.5th_m
+      - switch.5th_f
