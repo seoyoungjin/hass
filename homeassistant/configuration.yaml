@@ -1,14 +1,14 @@
 homeassistant:
   name: Seowoo
-  latitude: 37.57
-  longitude: 126.98
-  elevation: 40
+  latitude: !secret latitude_loc
+  longitude: !secret longitude_loc
+  elevation: !secret elevation_loc
   unit_system: metric
   time_zone: Asia/Seoul
 
 # seowoo
 http:
-  api_password: 931107
+  api_password: !secret http_password
   # Set to 1 to enable development mode
   # development: 1
 
@@ -88,7 +88,7 @@ sensor 6th:
 
 sensor owm:
   platform: openweathermap
-  api_key: 9cb6929371825465a7d1dba06c001860
+  api_key: !secret owm_key
   forecast: 0
   monitored_conditions:
     - weather
@@ -97,8 +97,8 @@ sensor owm:
 
 notify:
   platform: telegram
-  api_key: 287934766:AAF34VtjLYQOUB1-rMGl58A55X5kfFa4QSo
-  chat_id: 314888467
+  api_key: !secret telegram_key
+  chat_id: !secret telegram_chat_id
 
 # Automation
 automation: !include_dir_list automation
