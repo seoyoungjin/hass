@@ -1,15 +1,12 @@
 #! /bin/bash
 
-SERVER=192.168.31.1                           
+# google public DNS server
+SERVER=8.8.8.8
                                                
 ping -c4 ${SERVER} > /dev/null               
                                                
 if [ $? != 0 ]                               
 then                                         
     logger -t $0 "WiFi seems down, restarting"
-    ifdown --force wlan0                     
-    sleep 5
-    ifup wlan0                               
-else                                        
-    logger -t $0 "WiFi seems up."           
+    sudo reboot
 fi
