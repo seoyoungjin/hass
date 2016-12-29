@@ -61,8 +61,13 @@ group:
   6th_floor:
     - binary_sensor.6th_window
     - sensor.6th_temperature
+    - sensor.6th_humidity
     - switch.6th_m
     - switch.6th_f
+  raspberry pi:
+    - sensor.cpu_use
+    - sensor.ram_free
+    - script.reboot_pi
 
 mqtt:
   broker: localhost
@@ -79,11 +84,22 @@ binary_sensor:
     payload_on: "open"
     payload_off: "close"
 
+sensor pi:
+  - platform: systemmonitor
+    resources:
+      - type: processor_use
+      - type: memory_free
+
 sensor 6th:
   - platform: mqtt
     state_topic: 'xiaomi/sensor_ht/158d0000f19c74/temperature'
     name: '6th Temperature'
     unit_of_measurement: '°C'
+    value_template: '{{ float(value) / 100 }}'
+  - platform: mqtt
+    state_topic: 'xiaomi/sensor_ht/158d0000f19c74/humidity'
+    name: '6th Humidity'
+    unit_of_measurement: '%'
     value_template: '{{ float(value) / 100 }}'
 
 sensor owm:
@@ -99,6 +115,16 @@ notify:
   platform: telegram
   api_key: !secret telegram_key
   chat_id: !secret telegram_chat_id
+
+script:
+  reboot_pi:
+    alias: Reboot PI
+    sequence:
+      - alias: Reboot PI
+        service: shell_command.reboot_pi
+
+shell_command:
+  reboot_pi: sudo reboot
 
 # Automation
 automation: !include_dir_list automation

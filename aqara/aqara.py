@@ -1,6 +1,7 @@
 #! /usr/bin/python3
 
 import socket
+import time
 import binascii
 import struct
 import json
@@ -25,6 +26,7 @@ def push_data(client, model, sid, cmd, data):
                                sid=sid,
                                cmd=cmd,
                                prop=key)
+        #print("PUSH path=(%s), payload=(%s)" % (path, value))
         syslog.syslog(syslog.LOG_INFO, "PUSH path=(%s), payload=(%s)" % (path, value))
         client.publish(path, payload=value, qos=0)
  
@@ -34,6 +36,8 @@ class XiaomiConnector:
  
     MULTICAST_ADDRESS = '224.0.0.50'
     SOCKET_BUFSIZE = 1024
+
+    RESET_INTERVAL = 180
  
     def __init__(self, data_callback=None, auto_discover=True):
         self.data_callback = data_callback
@@ -41,6 +45,7 @@ class XiaomiConnector:
         self.socket = self._prepare_socket()
  
         self.nodes = dict()
+        self.start_time = time.time()
     
     def _prepare_socket(self):
         sock = socket.socket(socket.AF_INET, # Internet
@@ -57,9 +62,13 @@ class XiaomiConnector:
         sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
  
         return sock
+
+    def _check_interval(self):
+        if self.RESET_INTERVAL < time.time() - self.start_time:
+            self.nodes = dict()
+            self.start_time = time.time()
  
     def check_incoming(self):
-        print("checking")
         data, addr = self.socket.recvfrom(self.SOCKET_BUFSIZE)
         try:
             payload = json.loads(data.decode("utf-8"))
@@ -67,8 +76,8 @@ class XiaomiConnector:
             self.handle_incoming_data(payload)
  
         except Exception as e:
-            raise
-            syslog.syslog(syslog.LOG_ERROR, "Can't handle message %r (%r)" % (data, e))
+            syslog.syslog(syslog.LOG_ERR, "Can't handle message %r (%r)" % (data, e))
+            pass
  
     def handle_incoming_data(self, payload):
         if isinstance(payload.get('data', None), str):
@@ -83,11 +92,13 @@ class XiaomiConnector:
             if cmd == "read_ack" and payload["sid"] not in self.nodes:
                 self.nodes[payload["sid"]] = dict(model=payload["model"])
  
-            if cmd == "heartbeat" and payload["sid"] not in self.nodes:
-                self.request_sids(payload["sid"])
-                self.nodes[payload["sid"]] = json.loads(payload["data"])
-                self.nodes[payload["sid"]]["model"] = payload["model"]
-                self.nodes[payload["sid"]]["sensors"] = []
+            if cmd == "heartbeat" and payload["model"] == "gateway":
+                self._check_interval()
+                if payload["sid"] not in self.nodes:
+                    self.request_sids(payload["sid"])
+                    self.nodes[payload["sid"]] = json.loads(payload["data"])
+                    self.nodes[payload["sid"]]["model"] = payload["model"]
+                    self.nodes[payload["sid"]]["sensors"] = []
  
             if cmd == "get_id_list_ack":
                 device_sids = json.loads(payload["data"])
