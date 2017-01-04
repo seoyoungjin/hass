@@ -5,3 +5,8 @@ sensor.temperature_158d0000f19c74:
 sensor.humidity_158d0000f19c74:
   friendly_name: Humidity
   icon: mdi:water-percent
+
+switch.switch_double_click_158d0000ee12e0:
+  hidden: true
+switch.switch_one_click_158d0000ee12e0:
+  hidden: true
