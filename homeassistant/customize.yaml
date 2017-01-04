@@ -1,0 +1,7 @@
+binary_sensor.magnet_158d0000f4f404:
+  friendly_name: 6th_window
+sensor.temperature_158d0000fa3793:
+  friendly_name: 6th_temperature
+ssensor.humidity_158d0000fa3793:
+  friendly_name: 6th_humidity
+  icon: mdi:water-percent
