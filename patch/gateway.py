@@ -72,7 +72,7 @@ class AqaraGateway:
                 recvData, addr = tempSocket.recvfrom(1024)
                 if len(recvData) is not None:
                     decodedJson = recvData.decode()
-                    _LOGGER.debug("socketSendMsg: %s", recvData)
+                    _LOGGER.debug("socketSendMsg() payload: %s", recvData)
                 else:
                     _LOGGER.error("no response from gateway")
             except socket.timeout:
@@ -224,7 +224,7 @@ class AqaraGateway:
                 data, addr = self.socket.recvfrom(self.SOCKET_BUFSIZE)
                 try:
                     payload = json.loads(data.decode("utf-8"))
-                    _LOGGER.debug('gateway listen_thread() - payload: %s',  payload)
+                    _LOGGER.debug('listen_thread() - payload: %s',  payload)
                     self._queue.put(payload)
                 except Exception as e:
                     raise
