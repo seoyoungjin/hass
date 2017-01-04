@@ -6,7 +6,8 @@ import binascii
 import struct
 import json
 import paho.mqtt.client as mqtt
-import syslog
+import logging
+import logging.handlers
  
  
 MQTT_SERVER = "localhost"
@@ -26,8 +27,6 @@ def push_data(client, model, sid, cmd, data):
                                sid=sid,
                                cmd=cmd,
                                prop=key)
-        #print("PUSH path=(%s), payload=(%s)" % (path, value))
-        syslog.syslog(syslog.LOG_INFO, "PUSH path=(%s), payload=(%s)" % (path, value))
         client.publish(path, payload=value, qos=0)
  
 class XiaomiConnector:
@@ -69,14 +68,15 @@ class XiaomiConnector:
             self.start_time = time.time()
  
     def check_incoming(self):
+        logger = logging.getLogger("Aqara")
         data, addr = self.socket.recvfrom(self.SOCKET_BUFSIZE)
         try:
             payload = json.loads(data.decode("utf-8"))
-            print(payload)
+            logger.info(payload)
             self.handle_incoming_data(payload)
  
         except Exception as e:
-            syslog.syslog(syslog.LOG_ERR, "Can't handle message %r (%r)" % (data, e))
+            logger.error("Can't handle message %r (%r)" % (data, e))
             pass
  
     def handle_incoming_data(self, payload):
@@ -124,7 +124,12 @@ class XiaomiConnector:
         return self.nodes
     
 if __name__ == "__main__":
-    syslog.openlog(ident="Aqara")
+    logger = logging.getLogger("Aqara")
+    handler = logging.handlers.SysLogHandler(address = '/dev/log')
+    handler.setFormatter(logging.Formatter('Aqara: %(message)s'))
+    logger.addHandler(handler)
+    #logger.addHandler(logging.StreamHandler())
+
     client = prepare_mqtt()
     cb = lambda m, s, c, d: push_data(client, m, s, c, d)
     connector = XiaomiConnector(data_callback=cb)
