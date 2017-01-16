@@ -1,4 +1,4 @@
-alias: 6th floor heater at off
+alias: 6m heater at close
 trigger:
   - platform: numeric_state
     entity_id: sensor.temperature_158d0000f19c74
