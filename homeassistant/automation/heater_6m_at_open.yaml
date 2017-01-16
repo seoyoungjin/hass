@@ -24,4 +24,3 @@ action:
       {% endif %}
     entity_id:
       - switch.6th_m
-      - switch.6th_f

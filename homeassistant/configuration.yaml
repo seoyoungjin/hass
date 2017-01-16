@@ -10,8 +10,6 @@ homeassistant:
 # seowoo
 http:
   api_password: !secret http_password
-  # Set to 1 to enable development mode
-  # development: 1
 
 # Track the sun
 sun:
@@ -65,6 +63,8 @@ group:
     - sensor.temperature_158d0000f19c74
     - sensor.humidity_158d0000f19c74
     - switch.6th_m
+    - sensor.temperature_158d00010b3c99
+    - sensor.humidity_158d00010b3c99
     - switch.6th_f
   raspberry pi:
     - sensor.cpu_use

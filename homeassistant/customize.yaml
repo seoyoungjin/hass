@@ -1,12 +1,23 @@
 binary_sensor.magnet_158d0000f4f404:
   friendly_name: Window
+
 sensor.temperature_158d0000f19c74:
-  friendly_name: Temperature
+  friendly_name: 6M Temperature
 sensor.humidity_158d0000f19c74:
-  friendly_name: Humidity
+  friendly_name: 6M Humidity
   icon: mdi:water-percent
 
-switch.switch_double_click_158d0000ee12e0:
-  hidden: true
-switch.switch_one_click_158d0000ee12e0:
-  hidden: true
+sensor.temperature_158d00010b3c99:
+  friendly_name: 6F Temperature
+sensor.humidity_158d00010b3c99:
+  friendly_name: 6F Humidity
+  icon: mdi:water-percent
+
+#switch.switch.plug_158d00010f8de1:
+#  hidden: true
+#switch.switch_one_click_158d0000ee12e0:
+#  hidden: true
+#switch.switch_double_click_158d0000ee12e0:
+#  hidden: true
+#switch.switch_long_click_158d0000ee12e0:
+#  hidden: true

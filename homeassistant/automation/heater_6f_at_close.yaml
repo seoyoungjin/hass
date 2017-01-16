@@ -1,10 +1,10 @@
 alias: 6th floor heater at off
 trigger:
   - platform: numeric_state
-    entity_id: sensor.temperature_158d0000f19c74
+    entity_id: sensor.temperature_158d00010b3c99
     below: 1
   - platform: numeric_state
-    entity_id: sensor.temperature_158d0000f19c74
+    entity_id: sensor.temperature_158d00010b3c99
     above: 4
 condition:
   condition: time
@@ -15,13 +15,12 @@ action:
     data_template:
       title: 'ALERT'
       message: >
-        6th floor is {{ states('sensor.temperature_158d0000f19c74') }}
+        6th floor is {{ states('sensor.temperature_158d00010b3c99') }}
   - service_template: >
-      {% if states('sensor.temperature_158d0000f19c74') | float < 1 %}
+      {% if states('sensor.temperature_158d00010b3c99') | float < 1 %}
         switch.turn_on
       {% else %}
         switch.turn_off
       {% endif %}
     entity_id:
-      - switch.6th_m
       - switch.6th_f
