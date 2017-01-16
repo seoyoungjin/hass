@@ -15,7 +15,7 @@ action:
     data_template:
       title: 'ALERT'
       message: >
-        6th floor is {{ states('sensor.temperature_158d00010b3c99') }}
+        6f temperature is {{ states('sensor.temperature_158d00010b3c99') }}
   - service_template: >
       {% if states('sensor.temperature_158d00010b3c99') | float < 1 %}
         switch.turn_on
