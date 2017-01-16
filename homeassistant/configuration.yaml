@@ -60,12 +60,17 @@ group:
     - switch.5th_f
   6th floor:
     - binary_sensor.magnet_158d0000f4f404
-    - sensor.temperature_158d0000f19c74
     - sensor.humidity_158d0000f19c74
+    - sensor.temperature_158d0000f19c74
     - switch.6th_m
-    - sensor.temperature_158d00010b3c99
     - sensor.humidity_158d00010b3c99
+    - sensor.temperature_158d00010b3c99
     - switch.6th_f
+  sky rooms:
+    - sensor.humidity_158d00010b793d
+    - sensor.temperature_158d00010b793d
+    - sensor.humidity_158d00010b7a5d
+    - sensor.temperature_158d00010b7a5d
   raspberry pi:
     - sensor.cpu_use
     - sensor.ram_free

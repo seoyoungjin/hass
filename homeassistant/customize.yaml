@@ -12,12 +12,22 @@ sensor.temperature_158d00010b3c99:
 sensor.humidity_158d00010b3c99:
   friendly_name: 6F Humidity
   icon: mdi:water-percent
+sensor.temperature_158d00010b793d:
+  friendly_name: Mars Temperature
+sensor.humidity_158d00010b793d:
+  friendly_name: Mars Humidity
+  icon: mdi:water-percent
+sensor.temperature_158d00010b7a5d:
+  friendly_name: Saturn Temperature
+sensor.humidity_158d00010b7a5d:
+  friendly_name: Saturn Humidity
+  icon: mdi:water-percent
 
-#switch.switch.plug_158d00010f8de1:
-#  hidden: true
-#switch.switch_one_click_158d0000ee12e0:
-#  hidden: true
-#switch.switch_double_click_158d0000ee12e0:
-#  hidden: true
-#switch.switch_long_click_158d0000ee12e0:
-#  hidden: true
+switch.plug_158d00010f8de1:
+  hidden: true
+switch.switch_one_click_158d0000ee12e0:
+  hidden: true
+switch.switch_double_click_158d0000ee12e0:
+  hidden: true
+switch.switch_long_press_158d0000ee12e0:
+  hidden: true
